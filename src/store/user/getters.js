@@ -5,4 +5,7 @@ export default {
     errors( state, ) {
         return state.errors
     },
+    loggedIn( state, ) {
+        return state.loggedIn
+    },
 }

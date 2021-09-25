@@ -16,7 +16,7 @@
                 btn: 'primary',
             }" 
             type="button" 
-            text="Registrarse" 
+            text="Ingresar" 
             icon="fas fa-save" 
             :loading="fetchingData" 
             @click="loginEvent"
@@ -40,26 +40,17 @@ export default {
     setup: () => {
 
         const {
-            setFetchingData,
-            getLogin,
             fetchingData, 
             errors,
+            getLogin
         } = useUser()
-
-        const currentStep = ref(0);
 
         const formValues = reactive({
             email: 'prueba@gmail.com',
             password: '123456',
         });
 
-        const formValuesErrors = ref({});
-
-        onMounted(async () => {
-        })
-
         const loginEvent = async () => {
-            console.log('loginEvent',formValues)
             getLogin(formValues)
         }
 

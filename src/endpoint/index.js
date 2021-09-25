@@ -14,7 +14,7 @@ export default {
         const user = localStorage.getItem('user')
         if(user){
             const userData = JSON.parse(user)
-            headers['Authorization'] = `Bearer ${userData.token}`
+            headers['Authorization'] = `Bearer ${userData.access_token}`
         }
         const instance = axios.create({
             method: 'GET', 
@@ -33,7 +33,7 @@ export default {
         const user = localStorage.getItem('user')
         if(user){
             const userData = JSON.parse(user)
-            headers['Authorization'] = `Bearer ${userData.token}`
+            headers['Authorization'] = `Bearer ${userData.access_token}`
         }
         const instance = axios.create({
             method: 'GET', 
