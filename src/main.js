@@ -10,7 +10,6 @@ const app = createApp(App)
 
 const user = localStorage.getItem('user')
 if(user){
-    console.log('store',store)
     const { access_token, expires_in, token_type, } = JSON.parse(user)
     store.dispatch('user/fetchUser',{ access_token, expires_in, token_type, })
 }else{

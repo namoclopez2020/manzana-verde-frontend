@@ -10,8 +10,6 @@ const useUser = () => {
     // dispatch -> actions
     // commit -> mutations
 
-    console.log('useUser')
-
     return {
         fetchingData: computed((e) => store.getters[`${object}/fetchingData`] ),
         errors: computed((e) => store.getters[`${object}/errors`] ),

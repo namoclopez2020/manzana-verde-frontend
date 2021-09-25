@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { ref, reactive, computed, onMounted } from "vue";
+import { reactive, } from "vue";
 
 import ButtonCustom from '../components/Button.vue'
 
@@ -40,9 +40,9 @@ export default {
     setup: () => {
 
         const {
+            getLogin,
             fetchingData, 
             errors,
-            getLogin
         } = useUser()
 
         const formValues = reactive({
