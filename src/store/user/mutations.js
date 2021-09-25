@@ -21,4 +21,16 @@ export default {
         state.fetchingData = false
         state.errors = errors
     },
+    [types.USER] (state, data){
+        console.log('mutations')
+        state.data = data;
+        if(data){
+            state.loggedIn = true;
+            localStorage.setItem('user', JSON.stringify(data))
+            router.push("admin");
+        }else{
+            state.loggedIn = false;
+            localStorage.removeItem('user')
+        }
+    },
 }

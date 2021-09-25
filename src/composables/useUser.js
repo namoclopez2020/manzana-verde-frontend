@@ -18,6 +18,7 @@ const useUser = () => {
 
         // Methods
         setRegister: ( e ) => store.dispatch(`${object}/register`, e ),
+        getLogin: ( e ) => store.dispatch(`${object}/login`, e ),
         setFetchingData: ( e ) => store.dispatch(`${object}/setFetchingData`, e ),
     }
 }

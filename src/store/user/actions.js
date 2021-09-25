@@ -40,4 +40,40 @@ export default {
             }
         });
     },
+    login ({commit}, {
+        password,
+        email,
+    }) {
+        commit(types.FETCH_REQUEST, {})
+
+        return endpoint.post({
+            url: `${types.route}/login`,
+            params: {
+                password,
+                email,
+            },
+        })
+        .then(data => { 
+            commit(types.FETCH_SUCCESS, { data })
+
+            return data;
+        })
+        .catch(err => {
+            if(err?.response){
+                const { response } = err
+                const { data, status } = response
+
+                commit(types.FETCH_FAILURE, { errors: arrayToString(data) }) 
+
+                return data
+            }
+        });
+    },
+    fetchUser({ commit }, data ) {
+        if (data) {
+            commit("USER", data );
+        } else {
+            commit("USER", null);
+        }
+    },
 }
