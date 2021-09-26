@@ -1,9 +1,5 @@
 <template>
     <div class="row">
-        <Create
-            ref="modal_create"
-        />
-        <button @click="modalEvent">Modal</button>
         <div class="col">
             <p class="h1">Listado de comidas</p>
             <template v-if="notSelectedErrors">
@@ -14,6 +10,7 @@
                     <span class="visually-hidden">Cargando...</span>
                 </div>
             </template>
+            <button type="button" class="btn btn-primary" @click="modalEvent">Agregar comida</button>
             <TableCustom
                 :columns="[
                     {
@@ -100,6 +97,9 @@
             </TableCustom>
         </div>
     </div>
+    <Create
+        ref="modal_create"
+    />
 </template>
 
 <script>

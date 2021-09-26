@@ -19,11 +19,14 @@ const useFood = () => {
         listNotSelected: computed((e) => store.getters[`${object}/listNotSelected`] ),
         listSelected: computed((e) => store.getters[`${object}/listSelected`] ),
 
-        // Methods
         getListNotSelected: ( e ) => store.dispatch(`${object}/getListNotSelected`, e ),
         getListSelected: ( e ) => store.dispatch(`${object}/getListSelected`, e ),
         setAssign: ( e ) => store.dispatch(`${object}/setAssign`, e ),
         setDelete: ( e ) => store.dispatch(`${object}/setDelete`, e ),
+
+        setFood: ( e ) => store.dispatch(`${object}/setFood`, e ),
+        createFetchingData: computed((e) => store.getters[`${object}/createFetchingData`] ),
+        createErrors: computed((e) => store.getters[`${object}/createErrors`] ),
     }
 }
 

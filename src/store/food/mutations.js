@@ -23,9 +23,7 @@ export default {
     },
     [types.FETCH_SUCCESS_SELECTED] (state, { data }){
         const { list } = data
-
         state.listSelected = list
-        
         state.selectedFetchingData = false
         state.selectedErrors = null
     },
@@ -41,21 +39,12 @@ export default {
         item.errors = null;
     },
     [types.SET_ASSIGN_FETCH_SUCCESS] (state, { id }){
-
-        console.log('SET_ASSIGN_FETCH_SUCCESS',state)
-
         const { data: listNotSelected } = state.listNotSelected
-
         const { data: listSelected } = state.listSelected
-
-        console.log('listNotSelected',listNotSelected)
-
         const item = listNotSelected.find(e => e.id == id);
         item.fetchingData = false;
         item.errors = null;
-
         state.listNotSelected.data = listNotSelected.filter(e => e.id != id);
-
         listSelected.unshift(item);
     },
     [types.SET_ASSIGN_FETCH_FAILED] (state, { id, errors }){
@@ -72,22 +61,34 @@ export default {
     },
     [types.SET_DELETE_FETCH_SUCCESS] (state, { id }){
         const { data: listNotSelected } = state.listNotSelected
-
         const { data: listSelected } = state.listSelected
-
-        console.log('listNotSelected',listNotSelected)
-
         const item = listSelected.find(e => e.id == id);
         item.fetchingData = false;
         item.errors = null;
-
         state.listSelected.data = listSelected.filter(e => e.id != id);
-
         listNotSelected.unshift(item);
     },
     [types.SET_DELETE_FETCH_FAILED] (state, { id, errors }){
         const item = listSelected.find(e => e.id == id);
         item.fetchingData = false;
         item.errors = errors;
+    },
+
+    [types.SET_CREATE_FETCH_REQUEST] (state){
+        state.createFetchingData = true
+        state.createErrors = null
+    },
+    [types.SET_CREATE_FETCH_SUCCESS] (state, { data }){
+        state.createFetchingData = false
+        state.createErrors = null
+
+        console.log('data',data)
+        if(data?.data?.lists?.unselected) state.listNotSelected = data.data.lists.unselected
+        state.notSelectedFetchingData = false
+        state.notSelectedErrors = null
+    },
+    [types.SET_CREATE_FETCH_FAILED] (state, { errors }){
+        state.createFetchingData = false
+        state.createErrors = errors
     },
 }

@@ -123,4 +123,40 @@ export default {
             }
         });
     },
+    setFood ({commit}, {
+        name,
+        description,
+        picture,
+    }) {
+        commit(types.SET_CREATE_FETCH_REQUEST)
+
+        return endpoint.post({
+            url: `${types.route}/create`,
+            params: {
+                name,
+                description,
+                picture,
+            },
+        })
+        .then(data => {
+            console.log('actions->data',data)
+            commit(types.SET_CREATE_FETCH_SUCCESS, {
+                name,
+                description,
+                picture,
+                data,
+            })
+
+            return true;
+        })
+        .catch(err => {
+            if(err?.response){
+                const { response } = err
+                const { data, status } = response
+
+                commit(types.SET_CREATE_FETCH_FAILED, { errors: arrayToString(data) }) 
+            }
+            return false
+        });
+    },
 }

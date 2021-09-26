@@ -12,6 +12,13 @@ export default {
         return state.notSelectedErrors
     },
 
+    createFetchingData( state, ) {
+        return state.createFetchingData
+    },
+    createErrors( state, ) {
+        return state.createErrors
+    },
+
 
     listNotSelected( state, ) {
         return state.listNotSelected
