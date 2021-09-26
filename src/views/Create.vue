@@ -51,7 +51,7 @@
                     btn: 'primary',
                 }" 
                 type="button" 
-                text="Unirse" 
+                text="Guardar" 
                 icon="" 
                 :loading="createFetchingData" 
                 @click="createEvent"

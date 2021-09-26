@@ -1,100 +1,104 @@
 <template>
-    <div class="row">
-        <div class="col">
-            <p class="h1">Listado de comidas</p>
-            <template v-if="notSelectedErrors">
-                <div class="alert alert-danger" role="alert" v-if="notSelectedErrors" v-html="notSelectedErrors"></div>
-            </template>
-            <template v-if="notSelectedFetchingData">
-                <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
-                    <span class="visually-hidden">Cargando...</span>
+    <div class="p-4">
+        <div class="container bg-light border p-2">
+            <div class="row">
+                <div class="col">
+                    <p class="h1">Listado de comidas</p>
+                    <template v-if="notSelectedErrors">
+                        <div class="alert alert-danger" role="alert" v-if="notSelectedErrors" v-html="notSelectedErrors"></div>
+                    </template>
+                    <template v-if="notSelectedFetchingData">
+                        <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                    </template>
+                    <button type="button" class="btn btn-primary" @click="modalEvent">Agregar comida</button>
+                    <TableCustom
+                        :columns="[
+                            {
+                                label: 'Nombre',
+                                field: 'name',
+                            },
+                            {
+                                label: 'Descripción',
+                                field: 'description',
+                            },
+                            {
+                                label: 'Imagen',
+                                field: 'picture',
+                            },
+                            {
+                                label: 'Acciones',
+                                field: 'actions',
+                            },
+                        ]"
+                        :list="listNotSelected"
+                        :per_page="pageNotSelected"
+                        @update="getListNotSelectedEvent"
+                    >
+                        <template v-slot:actions="props">
+                            <ButtonCustom
+                                :classesNames="{
+                                    btn_custom: 'btn-outline-primary',
+                                }" 
+                                type="button" 
+                                text="Asignar" 
+                                icon="fas fa-save" 
+                                :loading="props.dataFetchingData" 
+                                @click="assignEvent({id:props.dataId})"
+                            />
+                        </template>
+                    </TableCustom>
                 </div>
-            </template>
-            <button type="button" class="btn btn-primary" @click="modalEvent">Agregar comida</button>
-            <TableCustom
-                :columns="[
-                    {
-                        label: 'Nombre',
-                        field: 'name',
-                    },
-                    {
-                        label: 'Descripción',
-                        field: 'description',
-                    },
-                    {
-                        label: 'Imagen',
-                        field: 'picture',
-                    },
-                    {
-                        label: 'Acciones',
-                        field: 'actions',
-                    },
-                ]"
-                :list="listNotSelected"
-                :per_page="pageNotSelected"
-                @update="getListNotSelectedEvent"
-            >
-                <template v-slot:actions="props">
-                    <ButtonCustom
-                        :classesNames="{
-                            btn_custom: 'btn-outline-primary',
-                        }" 
-                        type="button" 
-                        text="Asignar" 
-                        icon="fas fa-save" 
-                        :loading="props.dataFetchingData" 
-                        @click="assignEvent({id:props.dataId})"
-                    />
-                </template>
-            </TableCustom>
-        </div>
 
-        <div class="col">
-            <p class="h1">Listado de comidas asignadas al usuario</p>
-            <template v-if="selectedErrors">
-                <div class="alert alert-danger" role="alert" v-if="selectedErrors" v-html="selectedErrors"></div>
-            </template>
-            <template v-if="selectedFetchingData">
-                <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
-                    <span class="visually-hidden">Cargando...</span>
+                <div class="col">
+                    <p class="h1">Listado de comidas asignadas al usuario</p>
+                    <template v-if="selectedErrors">
+                        <div class="alert alert-danger" role="alert" v-if="selectedErrors" v-html="selectedErrors"></div>
+                    </template>
+                    <template v-if="selectedFetchingData">
+                        <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                    </template>
+                    <TableCustom
+                        :columns="[
+                            {
+                                label: 'Nombre',
+                                field: 'name',
+                            },
+                            {
+                                label: 'Descripción',
+                                field: 'description',
+                            },
+                            {
+                                label: 'Imagen',
+                                field: 'picture',
+                            },
+                            {
+                                label: 'Acciones',
+                                field: 'actions',
+                            },
+                        ]"
+                        :list="listSelected"
+                        :per_page="pageSelected"
+                        @update="getListSelectedEvent"
+                        >
+                        <template v-slot:actions="props">
+                            <ButtonCustom
+                                :classesNames="{
+                                    btn_custom: 'btn-outline-danger',
+                                }" 
+                                type="button" 
+                                text="Eliminar" 
+                                icon="fas fa-save" 
+                                :loading="props.dataFetchingData" 
+                                @click="deleteEvent({id:props.dataId})"
+                            />
+                        </template>
+                    </TableCustom>
                 </div>
-            </template>
-            <TableCustom
-                :columns="[
-                    {
-                        label: 'Nombre',
-                        field: 'name',
-                    },
-                    {
-                        label: 'Descripción',
-                        field: 'description',
-                    },
-                    {
-                        label: 'Imagen',
-                        field: 'picture',
-                    },
-                    {
-                        label: 'Acciones',
-                        field: 'actions',
-                    },
-                ]"
-                :list="listSelected"
-                :per_page="pageSelected"
-                @update="getListSelectedEvent"
-                >
-                <template v-slot:actions="props">
-                    <ButtonCustom
-                        :classesNames="{
-                            btn_custom: 'btn-outline-danger',
-                        }" 
-                        type="button" 
-                        text="Eliminar" 
-                        icon="fas fa-save" 
-                        :loading="props.dataFetchingData" 
-                        @click="deleteEvent({id:props.dataId})"
-                    />
-                </template>
-            </TableCustom>
+            </div>
         </div>
     </div>
     <Create

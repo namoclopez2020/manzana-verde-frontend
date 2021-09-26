@@ -11,7 +11,7 @@
                     disabled: !item.url,
                 }"
             >
-                <a class="page-link" href="#" v-html="item.label"></a>
+                <a class="page-link cursor-pointer" v-html="item.label"></a>
             </li>
         </ul>
     </div>
@@ -36,3 +36,9 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+.cursor-pointer{
+    cursor: pointer;
+}
+</style>

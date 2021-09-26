@@ -1,8 +1,6 @@
 <template>
     <NavBar/>
-    <div class="p-3 my-3 border container-fluid">
-        <router-view/>
-    </div>
+    <router-view/>
 </template>
 
 <script>

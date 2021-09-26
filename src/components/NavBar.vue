@@ -1,7 +1,7 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light nav-custom">
         <div class="container-fluid">
-            <router-link to="/" class="navbar-brand">Manzana Verde</router-link>
+            <router-link to="/" class="navbar-brand"><img src="images/logo-manzana-verde.svg" alt="Manzana Verde"></router-link>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -16,12 +16,12 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                User
+                                Usuario
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li>
                                     <a class="dropdown-item" href="#" @click="logoutEvent">
-                                        Logout
+                                        Cerrar sesión
                                     </a>
                                 </li>
                             </ul>
@@ -33,12 +33,15 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li>
-                                <router-link to="/register" active-class="active" class="dropdown-item">Register</router-link>
+                                <router-link to="/register" active-class="active" class="dropdown-item">Registrar</router-link>
                             </li>
                             <li>
-                                <router-link to="/login" active-class="active" class="dropdown-item">Login</router-link>
+                                <router-link to="/login" active-class="active" class="dropdown-item">Ingresar</router-link>
                             </li>
                         </ul>
+                    </li>
+                    <li class="nav-item">
+                        <router-link to="/documentation" active-class="active" class="nav-link">Documentación</router-link>
                     </li>
                 </ul>
             </div>
@@ -71,3 +74,18 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+.nav-custom{
+    height: 8vh;
+}
+.dropdown-item.active, .dropdown-item:active {
+    color: #fff;
+    text-decoration: none;
+    background-color: rgb(0 149 30 / 90%);
+}
+.navbar-light .navbar-nav .nav-link.active, .navbar-light .navbar-nav .show>.nav-link {
+    color: rgb(0 109 22 / 90%);
+    font-weight: bold;
+}
+</style>
