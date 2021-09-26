@@ -1,24 +1,43 @@
-# manzana-verde-front
+# Manzana verde plataforma de pedidos - namoclopez2020
 
-## Project setup
+## Demo de esta app:
+
+Ver [Manzana verde plataforma deployed in Netlify.app](https://josenamoc-manzana-verde.netlify.app/).
+
+## Pasos para instalar esta app en local:
+
+### Clonar el repositorio
+```
+git clone https://github.com/namoclopez2020/manzana-verde-frontend
+```
+
+### Dirigirse a la carpeta
+```
+cd manzana-verde-frontend
+```
+
+### Crear el archivo ".env"
+```
+touch .env
+```
+
+### Editar el archivo ".env"
+```
+sudo nano .env
+```
+
+### Instalar los paquetes necesarios
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Iniciar la app con:
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### Ingrese en su navegador en la URL indicada en consola, usualmente es algo como esto: 
 ```
-npm run build
-```
-
-### Run your unit tests
-```
-npm run test:unit
+http://localhost:8080/
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
