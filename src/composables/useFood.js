@@ -24,6 +24,10 @@ const useFood = () => {
         setAssign: ( e ) => store.dispatch(`${object}/setAssign`, e ),
         setDelete: ( e ) => store.dispatch(`${object}/setDelete`, e ),
 
+        getPicture: ( e ) => store.dispatch(`${object}/getPicture`, e ),
+        pictureFetchingData: computed((e) => store.getters[`${object}/pictureFetchingData`] ),
+        pictureErrors: computed((e) => store.getters[`${object}/pictureErrors`] ),
+
         setFood: ( e ) => store.dispatch(`${object}/setFood`, e ),
         createFetchingData: computed((e) => store.getters[`${object}/createFetchingData`] ),
         createErrors: computed((e) => store.getters[`${object}/createErrors`] ),

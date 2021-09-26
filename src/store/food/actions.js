@@ -78,8 +78,7 @@ export default {
             },
         })
         .then(data => {
-            console.log('actions->data',data)
-            commit(types.SET_ASSIGN_FETCH_SUCCESS, { id })
+            commit(types.SET_ASSIGN_FETCH_SUCCESS, { id, data, })
 
             return data;
         })
@@ -108,7 +107,7 @@ export default {
             },
         })
         .then(data => { 
-            commit(types.SET_DELETE_FETCH_SUCCESS, { id })
+            commit(types.SET_DELETE_FETCH_SUCCESS, { id, data, })
 
             return data;
         })
@@ -139,7 +138,6 @@ export default {
             },
         })
         .then(data => {
-            console.log('actions->data',data)
             commit(types.SET_CREATE_FETCH_SUCCESS, {
                 name,
                 description,
@@ -155,6 +153,37 @@ export default {
                 const { data, status } = response
 
                 commit(types.SET_CREATE_FETCH_FAILED, { errors: arrayToString(data) }) 
+            }
+            return false
+        });
+    },
+    getPicture ({commit}, {
+        name: food,
+    }) {
+        // commit(types.SET_CREATE_FETCH_REQUEST)
+
+        console.log('getPicture',food)
+
+        return endpoint.get({
+            url: `${types.route}/generate_image`,
+            params: {
+                food,
+            },
+        })
+        .then(data => {
+            console.log('data',data)
+            // commit(types.SET_CREATE_FETCH_SUCCESS, {
+            //     food,
+            // })
+
+            return data;
+        })
+        .catch(err => {
+            if(err?.response){
+                const { response } = err
+                const { data, status } = response
+
+                // commit(types.SET_CREATE_FETCH_FAILED, { errors: arrayToString(data) }) 
             }
             return false
         });

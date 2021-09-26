@@ -40,7 +40,7 @@
                             btn_custom: 'btn-outline-primary',
                         }" 
                         type="button" 
-                        text="Ingresar" 
+                        text="Asignar" 
                         icon="fas fa-save" 
                         :loading="props.dataFetchingData" 
                         @click="assignEvent({id:props.dataId})"

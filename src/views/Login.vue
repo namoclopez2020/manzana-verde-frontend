@@ -45,10 +45,7 @@ export default {
             errors,
         } = useUser()
 
-        const formValues = reactive({
-            email: 'prueba@gmail.com',
-            password: '123456',
-        });
+        const formValues = reactive({});
 
         const loginEvent = async () => {
             getLogin(formValues)

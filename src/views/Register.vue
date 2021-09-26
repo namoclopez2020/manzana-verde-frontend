@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { ref, reactive, computed, onMounted } from "vue";
+import { reactive, } from "vue";
 
 import ButtonCustom from '../components/Button.vue'
 
@@ -48,28 +48,14 @@ export default {
     setup: () => {
 
         const {
-            setFetchingData,
             setRegister,
             fetchingData, 
             errors,
         } = useUser()
 
-        const currentStep = ref(0);
-
-        const formValues = reactive({
-            name: 'prueba de nombres',
-            email: 'prueba@gmail.com',
-            password: '123456',
-            c_password: '123456',
-        });
-
-        const formValuesErrors = ref({});
-
-        onMounted(async () => {
-        })
+        const formValues = reactive({});
 
         const registerEvent = async () => {
-            console.log('registerEvent',formValues)
             setRegister(formValues)
         }
 

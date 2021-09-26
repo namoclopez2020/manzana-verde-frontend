@@ -9,14 +9,9 @@
         }"
     >
         <template v-slot:title>
-            <h5 class="modal-title font-weight-bold">Información</h5>
+            <h5 class="modal-title font-weight-bold">Crear comida</h5>
         </template>
         <template v-slot:body>
-            <!--
-                name
-                description
-                url
-            -->
             <div class="alert alert-danger" role="alert" v-if="createErrors" v-html="createErrors"></div>
 
             <div class="mb-3">
@@ -29,9 +24,20 @@
             </div>
             <div class="mb-3">
                 <label for="picture" class="form-label">Imagen</label>
-                <input type="text" class="form-control" name="picture" placeholder="" v-model="form.picture">
+                <div>
+                    <img :src="form.picture" alt="" class="img-fluid img-thumbnail">
+                </div>
+                <ButtonCustom
+                    :classesNames="{
+                        btn_custom: 'btn-outline-primary',
+                    }" 
+                    type="button" 
+                    text="Buscar" 
+                    icon="" 
+                    :loading="pictureFetchingData" 
+                    @click="pictureEvent"
+                />
             </div>
-            {{ form }}
         </template>
         <template 
             v-slot:actions
@@ -71,15 +77,16 @@ export default {
 
         const {
             setFood, 
+
+            getPicture,
+            pictureFetchingData,
+            pictureErrors,
+
             createFetchingData, 
             createErrors,
         } = useFood()
 
-        const form = ref({
-            name: 'prueba',
-            description: 'prueba descripcion',
-            picture: 'https://www.cine-calidad.com/',
-        })
+        const form = ref({})
 
         const modal = ref(null)
 
@@ -96,6 +103,19 @@ export default {
             }
         }
 
+        const pictureEvent = async () => {
+            try {
+                const pictureResponse = await getPicture({name: form.value.name})
+
+                if(pictureResponse?.data?.image){
+                    form.value['picture'] = pictureResponse.data.image.src.medium
+                }
+
+            } catch (error) {
+                
+            }
+        }
+
         return {
             modal,
             open,
@@ -105,6 +125,10 @@ export default {
             createErrors,
 
             createEvent,
+
+            pictureEvent,
+            pictureFetchingData,
+            pictureErrors,
         };
     },
 }
