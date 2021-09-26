@@ -1,6 +1,10 @@
 export default {
-    fetchingData : false,
-    errors : null,
+    selectedFetchingData : false,
+    notSelectedFetchingData : false,
+
+    selectederrors : null,
+    notSelectederrors : null,
+    
     data : {},
 
     listSelected: [],

@@ -1,62 +1,135 @@
 <template>
-    <div>
-        Admin
+    <div class="row">
+        <div class="col">
+            <p class="h1">Listado de comidas</p>
+            <template v-if="notSelectedErrors">
+                <div class="alert alert-danger" role="alert" v-if="notSelectedErrors" v-html="notSelectedErrors"></div>
+            </template>
+            <template v-if="notSelectedFetchingData">
+                <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+            </template>
+            <template v-else>
+                <TableCustom
+                    :columns="[
+                        {
+                            label: 'Nombre',
+                            field: 'name',
+                        },
+                        {
+                            label: 'Descripción',
+                            field: 'description',
+                        },
+                        {
+                            label: 'Imagen',
+                            field: 'picture',
+                        },
+                        {
+                            label: 'Acciones',
+                            field: 'actions',
+                        },
+                    ]"
+                    :list="listNotSelected"
+                    :per_page="pageNotSelected"
+                    @update="getListNotSelectedEvent"
+                >
+                    <template v-slot:actions="props">
+                        <ButtonCustom
+                            :classesNames="{
+                                btn_custom: 'btn-outline-primary',
+                            }" 
+                            type="button" 
+                            text="Ingresar" 
+                            icon="fas fa-save" 
+                            :loading="props.dataFetchingData" 
+                            @click="assignEvent({id:props.dataId})"
+                        />
+                    </template>
+                </TableCustom>
+            </template>
+        </div>
+
+        <div class="col">
+            <p class="h1">Listado de comidas asignadas al usuario</p>
+            <template v-if="selectedErrors">
+                <div class="alert alert-danger" role="alert" v-if="selectedErrors" v-html="selectedErrors"></div>
+            </template>
+            <template v-if="selectedFetchingData">
+                <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+            </template>
+            <template v-else>
+                <TableCustom
+                    :columns="[
+                        {
+                            label: 'Nombre',
+                            field: 'name',
+                        },
+                        {
+                            label: 'Descripción',
+                            field: 'description',
+                        },
+                        {
+                            label: 'Imagen',
+                            field: 'picture',
+                        },
+                        {
+                            label: 'Acciones',
+                            field: 'actions',
+                        },
+                    ]"
+                    :list="listSelected"
+                    :per_page="pageSelected"
+                    @update="getListSelectedEvent"
+                    >
+                    <template v-slot:actions="props">
+                        <ButtonCustom
+                            :classesNames="{
+                                btn_custom: 'btn-outline-danger',
+                            }" 
+                            type="button" 
+                            text="Eliminar" 
+                            icon="fas fa-save" 
+                            :loading="props.dataFetchingData" 
+                            @click="deleteEvent({id:props.dataId})"
+                        />
+                    </template>
+                </TableCustom>
+            </template>
+        </div>
     </div>
-    <TableCustom
-        :columns="[
-            {
-                label: 'Nº',
-                field: 'id',
-            },
-            {
-                label: 'Nombre',
-                field: 'name',
-            },
-            {
-                label: 'Descripción',
-                field: 'description',
-            },
-            {
-                label: 'Imagen',
-                field: 'picture',
-            },
-            {
-                label: 'Acciones',
-                field: 'actions',
-            },
-        ]"
-        :list="listNotSelected"
-        :per_page="pageNotSelected"
-        @update="getListNotSelectedEvent"
-        >
-        <template v-slot:actions="props">
-            <button type="button" class="btn btn-outline-primary" @click="info({id:props.dataId})">
-                Asignar
-            </button>
-        </template>
-    </TableCustom>
 </template>
 
 <script>
 import { ref, onMounted, } from 'vue'
 import TableCustom from '@/components/Table.vue'
+import ButtonCustom from '@/components/Button.vue'
 
-import useFood from '../composables/useFood'
+import useFood from '@/composables/useFood'
 
 export default {
     name: 'Admin',
     components:{
         TableCustom,
+        ButtonCustom,
     },
     setup: () => {
 
         const {
-            fetchingData, 
-            errors,
+            selectedFetchingData, 
+            notSelectedFetchingData,
+            selectedErrors,
+            notSelectedErrors,
+
             listNotSelected,
             getListNotSelected,
             listSelected,
             getListSelected,
+
+            setAssign,
+            setDelete,
         } = useFood()
 
         const pageNotSelected = ref(1)
@@ -64,10 +137,16 @@ export default {
 
         const pageSelected = ref(1)
         const perPageSelected = ref(10)
+
+        const assignEvent = ({id}) => {
+            setAssign({id})
+        }
+
+        const deleteEvent = ({id}) => {
+            setDelete({id})
+        }
         
         const getListNotSelectedEvent = (e) => {
-
-            console.log('getListNotSelectedEvent',e)
             if(e){
                 if(e?.page){
                     pageNotSelected.value = e?.page
@@ -76,21 +155,31 @@ export default {
                     perPageNotSelected.value = e?.per_page
                 }
             }
-
             getListNotSelected({
                 page: pageNotSelected.value,
                 per_page: perPageNotSelected.value,
+            })
+        }
+        
+        const getListSelectedEvent = (e) => {
+            if(e){
+                if(e?.page){
+                    pageSelected.value = e?.page
+                }
+                if(e?.per_page){
+                    perPageSelected.value = e?.per_page
+                }
+            }
+            getListSelected({
+                page: pageSelected.value,
+                per_page: perPageSelected.value,
             })
         }
 
         onMounted(async () => {
 
             getListNotSelectedEvent()
-
-            getListSelected({
-                page: pageSelected.value,
-                per_page: perPageSelected.value,
-            })
+            getListSelectedEvent()
 
         })
 
@@ -101,12 +190,17 @@ export default {
             perPageNotSelected,
 
             listSelected,
-            getListSelected,
+            getListSelectedEvent,
             pageSelected,
             perPageSelected,
 
-            fetchingData,
-            errors,
+            assignEvent,
+            deleteEvent,
+
+            selectedFetchingData, 
+            notSelectedFetchingData,
+            selectedErrors,
+            notSelectedErrors,
         };
     },
 }

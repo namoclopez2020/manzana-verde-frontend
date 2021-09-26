@@ -16,7 +16,7 @@
         <div v-else class="d-flex justify-content-center align-items-center">
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             <span v-if="text">
-                &nbsp;Cargando...
+                &nbsp;
             </span>
         </div>
     </button>
@@ -71,37 +71,3 @@ export default {
     },
 }
 </script>
-
-<style scoped>
-
-button {
-    display: inline-block;
-    font-weight: 400;
-    line-height: 1.5;
-    /* color: #212529; */
-    height: 64px;
-    text-align: center;
-    width: 100%;
-    text-decoration: none;
-    vertical-align: middle;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    /* background-color: transparent; */
-    border: 1px solid transparent;
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    border-radius: 1rem;
-    font-weight: bold;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-button:focus {
-    box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.2);
-    /* box-shadow: 0 0 0 0.25rem rgb(13 110 0 / 25%); */
-    /* box-shadow: 0 0 0 0.25rem #ff0033; */
-}
-
-</style>

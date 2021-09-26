@@ -1,8 +1,8 @@
 <template>
 
     <div class="row">
-        <div class="col-12 col-sm-3 col-md-2 col-lg-2">
-            <select class="custom-select" v-model="per_page_selected" @change="update({per_page:parseInt($event.target.value)})">
+        <div class="col">
+            <select v-model="per_page_selected" @change="update({per_page:parseInt($event.target.value)})">
                 <option v-for="item in per_pages" :value="item" :key="item">
                     {{ item }}
                 </option>
@@ -10,34 +10,33 @@
         </div>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th v-for="column in columns" :key="column.field">
-                        {{ column.label }}
-                    </th>
-                </tr>
-            </thead>
-            <tbody v-if="list?.data">
-                <tr v-for="row of list.data" :key="row.id">
-                    <td v-for="column in columns" :key="column.field">
-                        <div v-if="column.field === 'actions'">
-                            <slot name="actions" :data-id="row.id"></slot>
-                        </div>
-                        <div v-else-if="column.field === 'picture'">
-                            <img :src="row[column.field]" alt="" class="img-fluid img-thumbnail">
-                        </div>
-                        <div v-else>
-                            {{ row[column.field] }}
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <table class="table table-hover table-responsive">
+        <thead>
+            <tr>
+                <th v-for="column in columns" :key="column.field">
+                    {{ column.label }}
+                </th>
+            </tr>
+        </thead>
+        <tbody v-if="list?.data">
+            <tr v-for="row of list.data" :key="row.id">
+                <td v-for="column in columns" :key="column.field">
+                    <div v-if="column.field === 'actions'">
+                        <slot name="actions" :data-id="row.id" :data-fetching-data="row?.fetchingData"></slot>
+                    </div>
+                    <div v-else-if="column.field === 'picture'">
+                        <img :src="row[column.field]" alt="" class="img-fluid img-thumbnail">
+                    </div>
+                    <div v-else>
+                        {{ row[column.field] }}
+                    </div>
+                </td>
+                <!-- {{ row }} -->
+            </tr>
+        </tbody>
+    </table>
         
-    <pagination
+    <Pagination
         :params="pagination"
         @update="update"
     />

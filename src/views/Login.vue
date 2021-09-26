@@ -16,7 +16,7 @@
                 btn: 'primary',
             }" 
             type="button" 
-            text="Ingresar" 
+            text="Asignar" 
             icon="fas fa-save" 
             :loading="fetchingData" 
             @click="loginEvent"

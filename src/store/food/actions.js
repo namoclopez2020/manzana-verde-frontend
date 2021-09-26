@@ -62,4 +62,59 @@ export default {
             }
         });
     },
+    setAssign ({commit}, {
+        id,
+    }) {
+        commit(types.SET_ASSIGN_FETCH_REQUEST, { id })
+
+        return endpoint.post({
+            url: `${types.route}/assign`,
+            params: {
+                food_id: id,
+            },
+        })
+        .then(data => {
+            console.log('actions->data',data)
+            commit(types.SET_ASSIGN_FETCH_SUCCESS, { id })
+
+            return data;
+        })
+        .catch(err => {
+            if(err?.response){
+                const { response } = err
+                const { data, status } = response
+
+                commit(types.SET_ASSIGN_FETCH_FAILED, { id, errors: arrayToString(data) }) 
+
+                return data
+            }
+        });
+    },
+    setDelete ({commit}, {
+        id,
+    }) {
+        commit(types.SET_DELETE_FETCH_REQUEST, { id })
+
+        return endpoint.post({
+            url: `${types.route}/delete`,
+            params: {
+                food_id: id,
+            },
+        })
+        .then(data => { 
+            commit(types.SET_DELETE_FETCH_SUCCESS, { id })
+
+            return data;
+        })
+        .catch(err => {
+            if(err?.response){
+                const { response } = err
+                const { data, status } = response
+
+                commit(types.SET_DELETE_FETCH_FAILED, { id, errors: arrayToString(data) }) 
+
+                return data
+            }
+        });
+    },
 }
