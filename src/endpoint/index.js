@@ -26,7 +26,7 @@ export default {
             referrerPolicy: 'no-referrer', 
         });
 
-        return instance.get(url,params)
+        return instance.get(url,{params})
             .then( res => res.data )
     },
     post({url,params}){
