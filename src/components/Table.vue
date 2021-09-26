@@ -25,7 +25,7 @@
                         <slot name="actions" :data-id="row.id" :data-fetching-data="row?.fetchingData"></slot>
                     </div>
                     <div v-else-if="column.field === 'picture'">
-                        <img :src="row[column.field]" alt="" class="img-fluid img-thumbnail">
+                        <img :src="row[column.field]" alt="" class="img-fluid img-thumbnail" @error="imgPlaceholder">
                     </div>
                     <div v-else>
                         {{ row[column.field] }}
@@ -82,6 +82,9 @@ export default {
         },
         update(values){
             this.$emit('update',values)
+        },
+        imgPlaceholder(e){
+            e.target.src = "images/not_found.png"
         },
     },  
     watch: {

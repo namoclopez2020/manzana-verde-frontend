@@ -7,6 +7,7 @@
             },
             size: 'full',
         }"
+        @close="close"
     >
         <template v-slot:title>
             <h5 class="modal-title font-weight-bold">Crear comida</h5>
@@ -24,19 +25,22 @@
             </div>
             <div class="mb-3">
                 <label for="picture" class="form-label">Imagen</label>
-                <div>
-                    <img :src="form.picture" alt="" class="img-fluid img-thumbnail">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="picture" placeholder="" v-model="form.picture">
+                    <ButtonCustom
+                        :classesNames="{
+                            btn_custom: 'btn-outline-primary',
+                        }" 
+                        type="button" 
+                        text="Buscar" 
+                        icon="" 
+                        :loading="pictureFetchingData" 
+                        @click="pictureEvent"
+                    />
                 </div>
-                <ButtonCustom
-                    :classesNames="{
-                        btn_custom: 'btn-outline-primary',
-                    }" 
-                    type="button" 
-                    text="Buscar" 
-                    icon="" 
-                    :loading="pictureFetchingData" 
-                    @click="pictureEvent"
-                />
+                <div>
+                    <img :src="form.picture" alt="" class="img-fluid img-thumbnail" @error="imgPlaceholder">
+                </div>
             </div>
         </template>
         <template 
@@ -86,12 +90,21 @@ export default {
             createErrors,
         } = useFood()
 
+
+        const imgPlaceholder = (e) => {
+            e.target.src = "images/not_found.png"
+        }
+
         const form = ref({})
 
         const modal = ref(null)
 
         const open = () => {
             modal.value.open({});
+        }
+
+        const close = () => {
+            form.value = {}
         }
 
         const createEvent = async () => {
@@ -119,7 +132,10 @@ export default {
         return {
             modal,
             open,
+            close,
             form,
+
+            imgPlaceholder,
 
             createFetchingData, 
             createErrors,

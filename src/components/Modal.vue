@@ -122,7 +122,6 @@ export default {
             this.$emit('close');
             this.show = false;
             this.modal.hide();
-            // this.modal.modal('dispose');
         },
         destroy() {
             this.show = false;
