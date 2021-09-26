@@ -1,0 +1,25 @@
+@startuml logout
+
+actor "Actor"
+boundary "navBar.vue"
+control "useUser"
+control "store/user"
+entity "endpoint"
+
+"Actor" ->  "navBar.vue" : click "logout button"
+activate navBar.vue
+"navBar.vue" ->  "useUser" : setLogout()
+activate useUser
+"useUser" -> "store/user" : logout()
+activate "store/user"
+"store/user" -> "endpoint" : /api/auth/logout
+activate endpoint
+"endpoint" -> "store/user" : data
+deactivate endpoint
+"store/user" -> "store/user" : delete user data
+"store/user" -> "Actor" : redirect to home
+deactivate "store/user"
+deactivate useUser
+deactivate navBar.vue 
+
+@enduml

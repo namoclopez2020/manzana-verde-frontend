@@ -67,7 +67,7 @@ export default {
                 const { response } = err
                 const { data, status } = response
 
-                if(status == 401) commit("USER", null);
+                // if(status == 401) commit("USER", null);
 
                 commit(types.FETCH_FAILURE, { errors: arrayToString(data) }) 
 

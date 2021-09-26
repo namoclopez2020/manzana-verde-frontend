@@ -1,0 +1,25 @@
+@startuml unselected foods
+
+actor "Actor"
+boundary "admin.vue"
+control "useFood"
+control "store/food"
+entity "endpoint"
+
+"Actor" ->  "admin.vue" : getListNotSelected()
+activate admin.vue
+"admin.vue" ->  "useFood" : getListNotSelected()
+activate useFood
+"useFood" -> "store/food" : getListNotSelected()
+activate "store/food"
+"store/food" -> "endpoint" : /api/food/list
+activate endpoint
+"endpoint" -> "store/food" : data
+deactivate endpoint
+"store/food" -> "store/food" : saveData
+"store/food" -> "admin.vue" : refresh data
+deactivate "store/food"
+deactivate useFood
+deactivate admin.vue  
+
+@enduml
