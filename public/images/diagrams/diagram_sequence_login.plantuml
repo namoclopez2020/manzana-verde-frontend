@@ -1,0 +1,25 @@
+@startuml login
+
+actor "Actor"
+boundary "login.vue"
+control "useUser"
+control "store/user"
+entity "endpoint"
+
+"Actor" ->  "login.vue" : form
+activate login.vue
+"login.vue" ->  "useUser" : getLogin()
+activate useUser
+"useUser" -> "store/user" : login()
+activate "store/user"
+"store/user" -> "endpoint" : /api/auth/login
+activate endpoint
+"endpoint" -> "store/user" : data
+deactivate endpoint
+"store/user" -> "store/user" : saveData
+"store/user" -> "Actor" : redirect
+deactivate "store/user"
+deactivate useUser
+deactivate login.vue  
+
+@enduml

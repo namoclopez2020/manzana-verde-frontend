@@ -1,0 +1,25 @@
+@startuml assign food
+
+actor "Actor"
+boundary "admin.vue"
+control "useFood"
+control "store/food"
+entity "endpoint"
+
+"Actor" ->  "admin.vue" : click "Asignar" button
+activate admin.vue
+"admin.vue" ->  "useFood" : setAssign()
+activate useFood
+"useFood" -> "store/food" : setAssign()
+activate "store/food"
+"store/food" -> "endpoint" : /api/food/assign
+activate endpoint
+"endpoint" -> "store/food" : data
+deactivate endpoint
+"store/food" -> "store/food" : saveData
+"store/food" -> "admin.vue" : refresh data
+deactivate "store/food"
+deactivate useFood
+deactivate admin.vue  
+
+@enduml

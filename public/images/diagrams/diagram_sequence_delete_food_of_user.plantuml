@@ -1,0 +1,25 @@
+@startuml delete food of user
+
+actor "Actor"
+boundary "admin.vue"
+control "useFood"
+control "store/food"
+entity "endpoint"
+
+"Actor" ->  "admin.vue" : click "Eliminar" button
+activate admin.vue
+"admin.vue" ->  "useFood" : setDelete()
+activate useFood
+"useFood" -> "store/food" : setDelete()
+activate "store/food"
+"store/food" -> "endpoint" : /api/food/delete
+activate endpoint
+"endpoint" -> "store/food" : data
+deactivate endpoint
+"store/food" -> "store/food" : saveData
+"store/food" -> "admin.vue" : refresh data
+deactivate "store/food"
+deactivate useFood
+deactivate admin.vue  
+
+@enduml

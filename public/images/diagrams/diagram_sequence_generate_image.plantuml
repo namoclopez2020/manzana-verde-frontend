@@ -1,0 +1,24 @@
+@startuml generate image
+
+actor "Actor"
+boundary "create.vue"
+control "useFood"
+control "store/food"
+entity "endpoint"
+
+"Actor" -> "create.vue" : click "Buscar" button
+activate "create.vue"
+"create.vue" -> "useFood" : getPicture()
+activate useFood
+"useFood" -> "store/food" : getPicture()
+activate "store/food"
+"store/food" -> "endpoint" : /api/food/generate_image
+"endpoint" -> "store/food" : data 
+deactivate endpoint
+"store/food" -> "store/food" : saveData
+"store/food" -> "create.vue" : refresh data
+deactivate "store/food"
+deactivate "useFood"
+deactivate "create.vue"
+
+@enduml

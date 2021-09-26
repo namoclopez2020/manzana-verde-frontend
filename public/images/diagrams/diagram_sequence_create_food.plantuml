@@ -1,0 +1,30 @@
+@startuml create food
+
+actor "Actor"
+boundary "admin.vue"
+boundary "create.vue"
+control "useFood"
+control "store/food"
+entity "endpoint"
+
+"Actor" ->  "admin.vue" : click "Agregar comida" button
+activate admin.vue
+"admin.vue" -> "create.vue" : open()
+activate "create.vue"
+"create.vue" ->  "useFood" : setFood()
+activate useFood
+"useFood" -> "store/food" : setFood()
+activate "store/food"
+"store/food" -> "endpoint" : /api/food/create
+activate endpoint
+"endpoint" -> "store/food" : data 
+deactivate endpoint
+"store/food" -> "store/food" : saveData
+"store/food" -> "create.vue" : close()
+deactivate "create.vue"
+"store/food" -> "admin.vue" : refresh data
+deactivate "store/food"
+deactivate useFood
+deactivate admin.vue  
+
+@enduml
