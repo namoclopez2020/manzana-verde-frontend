@@ -6,12 +6,26 @@
                     <form action="" method="" class="row g-3">
                         <h4>Bienvenido</h4>
                         <div class="col-12">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" name="email" @keyup.enter="loginEvent" class="form-control" placeholder="jose@gmail.com" v-model="formValues.email">
+                            <InputText
+                                name="email"
+                                type="email"
+                                label="Email"
+                                placeholder=""
+                                v-model.trim.lazy="formValues.email"
+                                :value="formValues.email"
+                                :errors="formValuesErrors.email"
+                            />
                         </div>
                         <div class="col-12">
-                            <label for="password" class="form-label">Contraseña</label>
-                            <input type="password" name="password" @keyup.enter="loginEvent" class="form-control" placeholder="***" v-model="formValues.password">
+                            <InputText
+                                name="password"
+                                type="password"
+                                label="Contraseña"
+                                placeholder=""
+                                v-model.trim.lazy="formValues.password"
+                                :value="formValues.password"
+                                :errors="formValuesErrors.password"
+                            />
                         </div>
                         <div class="col-12">
                             <ButtonCustom
@@ -41,13 +55,19 @@
 <script>
 import { reactive, } from "vue";
 
+import * as yup from 'yup';
+
 import ButtonCustom from '../components/Button.vue'
+import InputText from '../components/InputText.vue'
 
 import useUser from '../composables/useUser'
+
+import { getErrorsFromYup } from '../helpers'
 
 export default {
     components : {  
         ButtonCustom,
+        InputText,
     },
     name: 'Register',
     setup: () => {
@@ -59,14 +79,29 @@ export default {
         } = useUser()
 
         const formValues = reactive({});
+        let formValuesErrors = reactive({});
+
+        const schema = yup.object().shape({
+            email: yup.string().email().required(),
+            password: yup.string().min(6).required(),
+        });
 
         const loginEvent = async () => {
-            getLogin(formValues)
+            try {
+                const valid = await schema.validate(formValues, { abortEarly: false })
+                for (const key in formValuesErrors) {
+                    formValuesErrors[key] = []
+                }
+                getLogin(formValues)
+            } catch (err) {
+                formValuesErrors = getErrorsFromYup({arr:formValuesErrors, err})
+            }
         }
 
         return {
             loginEvent,
             formValues,
+            formValuesErrors,
             fetchingData,
             errors,
         };

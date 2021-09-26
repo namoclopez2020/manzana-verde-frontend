@@ -6,20 +6,52 @@
                     <form action="" method="" class="row g-3">
                         <h4>Bienvenido</h4>
                         <div class="mb-12">
-                            <label for="name" class="form-label">Nombres y Apellidos</label>
-                            <input type="text" class="form-control" @keyup.enter="registerEvent" id="name" placeholder="Jose Namoc" v-model="formValues.name">
+                            <InputText
+                                name="name"
+                                type="name"
+                                label="Nombres y Apellidos"
+                                placeholder=""
+                                v-model.trim.lazy="formValues.name"
+                                :value="formValues.name"
+                                :errors="formValuesErrors.name"
+                                @keyup.enter="registerEvent"
+                            />
                         </div>
                         <div class="mb-12">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" @keyup.enter="registerEvent" id="email" placeholder="jose@gmail.com" v-model="formValues.email">
+                            <InputText
+                                name="email"
+                                type="email"
+                                label="Email"
+                                placeholder=""
+                                v-model.trim.lazy="formValues.email"
+                                :value="formValues.email"
+                                :errors="formValuesErrors.email"
+                                @keyup.enter="registerEvent"
+                            />
                         </div>
                         <div class="mb-12">
-                            <label for="password" class="form-label">Contraseña</label>
-                            <input type="password" class="form-control" @keyup.enter="registerEvent" id="password" placeholder="***" v-model="formValues.password">
+                            <InputText
+                                name="password"
+                                type="password"
+                                label="Contraseña"
+                                placeholder=""
+                                v-model.trim.lazy="formValues.password"
+                                :value="formValues.password"
+                                :errors="formValuesErrors.password"
+                                @keyup.enter="registerEvent"
+                            />
                         </div>
                         <div class="mb-12">
-                            <label for="c_password" class="form-label">Confirmar contraseña</label>
-                            <input type="password" class="form-control" @keyup.enter="registerEvent" id="c_password" placeholder="***" v-model="formValues.c_password">
+                            <InputText
+                                name="c_password"
+                                type="password"
+                                label="Confirmar contraseña"
+                                placeholder=""
+                                v-model.trim.lazy="formValues.c_password"
+                                :value="formValues.c_password"
+                                :errors="formValuesErrors.c_password"
+                                @keyup.enter="registerEvent"
+                            />
                         </div>
                         <div class="col-12">
                             <ButtonCustom
@@ -49,13 +81,19 @@
 <script>
 import { reactive, } from "vue";
 
+import * as yup from 'yup';
+
 import ButtonCustom from '../components/Button.vue'
+import InputText from '../components/InputText.vue'
 
 import useUser from '../composables/useUser'
+
+import { getErrorsFromYup } from '../helpers'
 
 export default {
     components : {
         ButtonCustom,
+        InputText,
     },
     name: 'Register',
     setup: () => {
@@ -66,15 +104,33 @@ export default {
             errors,
         } = useUser()
 
+        const schema = yup.object().shape({
+            name: yup.string().min(6).required(),
+            email: yup.string().email().required(),
+            password: yup.string().min(6).required(),
+            c_password: yup.string().min(6).required()
+                .oneOf([yup.ref('password'), null], 'Passwords must match')
+        });
+
         const formValues = reactive({});
+        let formValuesErrors = reactive({});
 
         const registerEvent = async () => {
-            setRegister(formValues)
+            try {
+                const valid = await schema.validate(formValues, { abortEarly: false })
+                for (const key in formValuesErrors) {
+                    formValuesErrors[key] = []
+                }
+                setRegister(formValues)
+            } catch (err) {
+                formValuesErrors = getErrorsFromYup({arr:formValuesErrors, err})
+            }
         }
 
         return {
             registerEvent,
             formValues,
+            formValuesErrors,
             fetchingData,
             errors,
         };
