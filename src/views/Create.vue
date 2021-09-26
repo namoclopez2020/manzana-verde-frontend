@@ -129,7 +129,7 @@ export default {
         }
 
         const schemaCreate = yup.object().shape({
-            name: yup.string().min(2).max(100).required(),
+            name: yup.string().min(3).max(100).required(),
             description: yup.string().min(6).max(100).required(),
         });
 
@@ -148,7 +148,9 @@ export default {
         }
 
         const close = () => {
-            formValues = reactive({})
+            for (const key in formValues) {
+                formValues[key] = null
+            }
         }
 
         const createEvent = async () => {
