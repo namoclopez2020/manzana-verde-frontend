@@ -31,6 +31,8 @@ export default {
 
                 return data
             }
+
+            
         });
     },
     getListSelected ({commit}, {
@@ -64,6 +66,7 @@ export default {
     },
     setAssign ({commit}, {
         id,
+        lists,
     }) {
         commit(types.SET_ASSIGN_FETCH_REQUEST, { id })
 
@@ -71,6 +74,7 @@ export default {
             url: `${types.route}/assign`,
             params: {
                 food_id: id,
+                lists,
             },
         })
         .then(data => {
@@ -92,6 +96,7 @@ export default {
     },
     setDelete ({commit}, {
         id,
+        lists,
     }) {
         commit(types.SET_DELETE_FETCH_REQUEST, { id })
 
@@ -99,6 +104,7 @@ export default {
             url: `${types.route}/delete`,
             params: {
                 food_id: id,
+                lists,
             },
         })
         .then(data => { 

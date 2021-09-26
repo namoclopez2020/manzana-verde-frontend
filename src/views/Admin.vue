@@ -1,5 +1,9 @@
 <template>
     <div class="row">
+        <Create
+            ref="modal_create"
+        />
+        <button @click="modalEvent">Modal</button>
         <div class="col">
             <p class="h1">Listado de comidas</p>
             <template v-if="notSelectedErrors">
@@ -10,44 +14,42 @@
                     <span class="visually-hidden">Cargando...</span>
                 </div>
             </template>
-            <template v-else>
-                <TableCustom
-                    :columns="[
-                        {
-                            label: 'Nombre',
-                            field: 'name',
-                        },
-                        {
-                            label: 'Descripción',
-                            field: 'description',
-                        },
-                        {
-                            label: 'Imagen',
-                            field: 'picture',
-                        },
-                        {
-                            label: 'Acciones',
-                            field: 'actions',
-                        },
-                    ]"
-                    :list="listNotSelected"
-                    :per_page="pageNotSelected"
-                    @update="getListNotSelectedEvent"
-                >
-                    <template v-slot:actions="props">
-                        <ButtonCustom
-                            :classesNames="{
-                                btn_custom: 'btn-outline-primary',
-                            }" 
-                            type="button" 
-                            text="Ingresar" 
-                            icon="fas fa-save" 
-                            :loading="props.dataFetchingData" 
-                            @click="assignEvent({id:props.dataId})"
-                        />
-                    </template>
-                </TableCustom>
-            </template>
+            <TableCustom
+                :columns="[
+                    {
+                        label: 'Nombre',
+                        field: 'name',
+                    },
+                    {
+                        label: 'Descripción',
+                        field: 'description',
+                    },
+                    {
+                        label: 'Imagen',
+                        field: 'picture',
+                    },
+                    {
+                        label: 'Acciones',
+                        field: 'actions',
+                    },
+                ]"
+                :list="listNotSelected"
+                :per_page="pageNotSelected"
+                @update="getListNotSelectedEvent"
+            >
+                <template v-slot:actions="props">
+                    <ButtonCustom
+                        :classesNames="{
+                            btn_custom: 'btn-outline-primary',
+                        }" 
+                        type="button" 
+                        text="Ingresar" 
+                        icon="fas fa-save" 
+                        :loading="props.dataFetchingData" 
+                        @click="assignEvent({id:props.dataId})"
+                    />
+                </template>
+            </TableCustom>
         </div>
 
         <div class="col">
@@ -60,52 +62,52 @@
                     <span class="visually-hidden">Cargando...</span>
                 </div>
             </template>
-            <template v-else>
-                <TableCustom
-                    :columns="[
-                        {
-                            label: 'Nombre',
-                            field: 'name',
-                        },
-                        {
-                            label: 'Descripción',
-                            field: 'description',
-                        },
-                        {
-                            label: 'Imagen',
-                            field: 'picture',
-                        },
-                        {
-                            label: 'Acciones',
-                            field: 'actions',
-                        },
-                    ]"
-                    :list="listSelected"
-                    :per_page="pageSelected"
-                    @update="getListSelectedEvent"
-                    >
-                    <template v-slot:actions="props">
-                        <ButtonCustom
-                            :classesNames="{
-                                btn_custom: 'btn-outline-danger',
-                            }" 
-                            type="button" 
-                            text="Eliminar" 
-                            icon="fas fa-save" 
-                            :loading="props.dataFetchingData" 
-                            @click="deleteEvent({id:props.dataId})"
-                        />
-                    </template>
-                </TableCustom>
-            </template>
+            <TableCustom
+                :columns="[
+                    {
+                        label: 'Nombre',
+                        field: 'name',
+                    },
+                    {
+                        label: 'Descripción',
+                        field: 'description',
+                    },
+                    {
+                        label: 'Imagen',
+                        field: 'picture',
+                    },
+                    {
+                        label: 'Acciones',
+                        field: 'actions',
+                    },
+                ]"
+                :list="listSelected"
+                :per_page="pageSelected"
+                @update="getListSelectedEvent"
+                >
+                <template v-slot:actions="props">
+                    <ButtonCustom
+                        :classesNames="{
+                            btn_custom: 'btn-outline-danger',
+                        }" 
+                        type="button" 
+                        text="Eliminar" 
+                        icon="fas fa-save" 
+                        :loading="props.dataFetchingData" 
+                        @click="deleteEvent({id:props.dataId})"
+                    />
+                </template>
+            </TableCustom>
         </div>
     </div>
 </template>
 
 <script>
 import { ref, onMounted, } from 'vue'
+
 import TableCustom from '@/components/Table.vue'
 import ButtonCustom from '@/components/Button.vue'
+import Create from './Create.vue'
 
 import useFood from '@/composables/useFood'
 
@@ -114,6 +116,7 @@ export default {
     components:{
         TableCustom,
         ButtonCustom,
+        Create,
     },
     setup: () => {
 
@@ -132,6 +135,12 @@ export default {
             setDelete,
         } = useFood()
 
+        const modal_create = ref(null)
+        const modalEvent = () => {
+            console.log('modal_create',modal_create)
+            modal_create.value.open();
+        }
+
         const pageNotSelected = ref(1)
         const perPageNotSelected = ref(10)
 
@@ -139,11 +148,35 @@ export default {
         const perPageSelected = ref(10)
 
         const assignEvent = ({id}) => {
-            setAssign({id})
+            setAssign({
+                id,
+                lists : {
+                    notSelected: {
+                        page: pageNotSelected.value,
+                        per_page: perPageNotSelected.value,
+                    },
+                    selected: {
+                        page: pageSelected.value,
+                        per_page: perPageSelected.value,
+                    },
+                }
+            })
         }
 
         const deleteEvent = ({id}) => {
-            setDelete({id})
+            setDelete({
+                id,
+                lists : {
+                    notSelected: {
+                        page: pageNotSelected.value,
+                        per_page: perPageNotSelected.value,
+                    },
+                    selected: {
+                        page: pageSelected.value,
+                        per_page: perPageSelected.value,
+                    },
+                }
+            })
         }
         
         const getListNotSelectedEvent = (e) => {
@@ -201,6 +234,9 @@ export default {
             notSelectedFetchingData,
             selectedErrors,
             notSelectedErrors,
+
+            modal_create,
+            modalEvent,
         };
     },
 }

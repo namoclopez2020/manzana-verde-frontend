@@ -35,6 +35,8 @@ export default {
                 const { response } = err
                 const { data, status } = response
 
+                if(status == 401) commit("USER", null);
+
                 commit(types.FETCH_FAILURE, { errors: arrayToString(data) }) 
 
                 return data
@@ -65,6 +67,8 @@ export default {
                 const { response } = err
                 const { data, status } = response
 
+                if(status == 401) commit("USER", null);
+
                 commit(types.FETCH_FAILURE, { errors: arrayToString(data) }) 
 
                 return data
@@ -87,6 +91,8 @@ export default {
             if(err?.response){
                 const { response } = err
                 const { data, status } = response
+
+                if(status == 401) commit("USER", null);
 
                 commit(types.FETCH_FAILURE, { errors: arrayToString(data) }) 
 
