@@ -33,20 +33,21 @@ export default {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    z-index: 10;
 }
 .jumbotron-custom{
-    height: 92vh !important;
+    height: 91vh !important;
     margin-bottom: 0px;
     position: relative;
 }
 .container-custom{
-    background-color: rgba(92, 234, 111, 0.651);
+    background-color: rgb(1 100 14 / 65%);
     border-radius: 5px;
     left: 3.5rem;
     padding: 1.5rem;
     position: absolute;
     top: 3.5rem; 
-    width: 460px;
+    width: 50%;
 }
 .container-custom p{
     margin-top: 15px;
